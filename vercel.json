@@ -23,5 +23,6 @@
       "src": "/(.*)",
       "dest": "public/index.php"
     }
-  ]
+  ],
+  "outputDirectory": "public"
 }
