@@ -3,8 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && php artisan optimize",
-    "vercel-build": "npm run build"
+    "build": "vite build"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
@@ -17,7 +16,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
-    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@fortawesome/react-fontawesome": "^0.2.2", 
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "react": "^18.3.1",
