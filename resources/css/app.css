@@ -9,7 +9,6 @@ body {
   @apply bg-slate-50 text-slate-800 antialiased;
 }
 
-/* Glassmorphism custom classes */
 .glass-card {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
@@ -24,15 +23,12 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Custom transitions and hover states */
 .sidebar-link-active {
-  background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(30, 58, 95, 0.1) 100%);
-  border-left: 4px solid #14b8a6;
-  color: #0d9488;
-  @apply font-semibold pl-5;
+  background-color: #24523e !important;
+  color: #ffffff !important;
+  font-weight: 600;
 }
 
-/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -48,14 +44,12 @@ body {
   background: #94a3b8;
 }
 
-/* Accessibility: ensure interactive touch targets meet 44x44px guideline */
 .touch-target {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Apply minimum touch target sizing on small screens */
 @media (max-width: 640px) {
   .touch-target {
     min-width: 44px;
@@ -63,7 +57,6 @@ body {
   }
 }
 
-/* Responsive images */
 .responsive-img {
   width: 100%;
   height: auto;
@@ -71,13 +64,11 @@ body {
   object-fit: contain;
 }
 
-/* Lazy image placeholder */
 .lazy-placeholder {
   background: linear-gradient(90deg, rgba(240,246,255,0.6), rgba(240,246,255,0.4));
   display: inline-block;
 }
 
-/* Keyframe animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
@@ -105,4 +96,3 @@ body {
 .animate-shake {
   animation: shake 0.2s ease-in-out 2;
 }
-

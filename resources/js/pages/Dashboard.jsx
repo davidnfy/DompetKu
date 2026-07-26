@@ -25,7 +25,20 @@ import { useToast } from '../context/ToastContext';
 export default function Dashboard() {
   const { user } = useAuth();
   const { showToast } = useToast();
-  const [days, setDays] = useState(7);
+  const getTodayLocalDate = () => {
+    const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+    return (new Date(Date.now() - tzoffset)).toISOString().slice(0, 10);
+  };
+
+  const getDaysAgoLocalDate = (daysCount) => {
+    const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+    const d = new Date(Date.now() - tzoffset);
+    d.setDate(d.getDate() - daysCount);
+    return d.toISOString().slice(0, 10);
+  };
+
+  const [startDate, setStartDate] = useState(getDaysAgoLocalDate(7));
+  const [endDate, setEndDate] = useState(getTodayLocalDate());
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -34,10 +47,17 @@ export default function Dashboard() {
     let ignore = false;
 
     async function fetchDashboard() {
+      if (!startDate || !endDate) return;
+
       setLoading(true);
       setError('');
       try {
-        const { data } = await api.get('/dashboard', { params: { days } });
+        const { data } = await api.get('/dashboard', {
+          params: {
+            start_date: startDate,
+            end_date: endDate
+          }
+        });
         if (!ignore) setData(data);
       } catch (err) {
         if (!ignore) {
@@ -53,7 +73,7 @@ export default function Dashboard() {
     return () => {
       ignore = true;
     };
-  }, [days]);
+  }, [startDate, endDate]);
 
   return (
     <AppLayout>
@@ -61,16 +81,21 @@ export default function Dashboard() {
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-primary-800">
-              Halo, {user?.name || 'Pengguna'} 👋
+            <h1 className="text-2xl font-bold text-[#1b4d3e]">
+              Halo, {user?.name || 'Pengguna'}
             </h1>
-            <p className="text-sm text-slate-400 mt-1">Berikut ringkasan keuanganmu</p>
+            <p className="text-xs text-gray-500 mt-0.5">Berikut ringkasan keuanganmu</p>
           </div>
-          <FilterChips value={days} onChange={setDays} />
+          <FilterChips 
+            startDate={startDate}
+            endDate={endDate}
+            onStartDateChange={setStartDate}
+            onEndDateChange={setEndDate}
+          />
         </div>
 
         {error && (
-          <div className="text-sm text-expense bg-rose-50 border border-rose-100 px-4 py-3 rounded-2xl animate-fade-in font-medium">
+          <div className="text-sm text-red-700 bg-red-50 border border-red-100 px-4 py-3 rounded-2xl animate-fade-in font-medium">
             {error}
           </div>
         )}
@@ -82,19 +107,19 @@ export default function Dashboard() {
           </div>
         ) : (
           <>
-            <div className="bg-white rounded-2xl px-5 py-4 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-200">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-sm text-slate-500 font-medium">
-                <span className="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
-                  <FontAwesomeIcon icon={faCircleDollarToSlot} className="text-slate-400" />
+            <div className="bg-white rounded-2xl px-5 py-4 border border-gray-200/80 shadow-sm transition-all duration-200">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-xs text-gray-500 font-medium">
+                <span className="w-8 h-8 rounded-xl bg-gray-150 flex items-center justify-center shrink-0">
+                  <FontAwesomeIcon icon={faCircleDollarToSlot} className="text-gray-400" />
                 </span>
                 <span>
-                  Rata-rata pengeluaran harian ({days} hari terakhir):{' '}
-                  <span className="font-bold text-expense">
+                  Rata-rata pengeluaran harian ({data.period_days} hari):{' '}
+                  <span className="font-bold text-red-700">
                     {formatCurrency(data.average_daily_expense)}
                   </span>
-                  <span className="mx-2 text-slate-300 hidden sm:inline">•</span>
+                  <span className="mx-2 text-gray-300 hidden sm:inline">•</span>
                   Rata-rata pemasukan harian:{' '}
-                  <span className="font-bold text-income">
+                  <span className="font-bold text-emerald-700">
                     {formatCurrency(data.average_daily_income)}
                   </span>
                 </span>
@@ -103,78 +128,81 @@ export default function Dashboard() {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
               <SummaryCard
-                label="Total Pemasukan"
+                label="Total pemasukan"
                 value={data.total_income}
                 icon={faArrowTrendUp}
-                colorClass="text-accent-600"
-                bgClass="bg-gradient-to-br from-accent-50 to-white"
-                iconBg="bg-accent-100/70"
+                colorClass="text-emerald-700"
+                valueColorClass="text-black"
+                bgClass="bg-[#eefaf4]"
+                iconBg="bg-emerald-100"
               />
               <SummaryCard
                 label="Total Pengeluaran"
                 value={data.total_expense}
                 icon={faArrowTrendDown}
-                colorClass="text-expense"
-                bgClass="bg-gradient-to-br from-rose-50 to-white"
-                iconBg="bg-rose-100/70"
+                colorClass="text-red-700"
+                valueColorClass="text-red-700 font-bold"
+                bgClass="bg-[#fff5f5]"
+                iconBg="bg-red-100"
               />
               <SummaryCard
-                label="Sisa Saldo"
+                label="Sisa uang"
                 value={data.balance}
                 icon={faScaleBalanced}
-                colorClass={data.balance >= 0 ? 'text-accent-600' : 'text-expense'}
-                bgClass={data.balance >= 0 ? 'bg-gradient-to-br from-accent-50/40 to-white' : 'bg-gradient-to-br from-rose-50/40 to-white'}
-                iconBg={data.balance >= 0 ? 'bg-accent-100/40' : 'bg-rose-100/40'}
+                colorClass="text-emerald-700"
+                valueColorClass="text-emerald-700 font-bold"
+                bgClass="bg-[#eefaf4]"
+                iconBg="bg-emerald-100"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Link 
                 to="/income" 
-                className="p-5 bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 rounded-3xl text-white shadow-md hover:shadow-lg transition-all flex items-center justify-between group"
+                className="p-5 bg-[#1b4d3e] hover:bg-[#153b2f] rounded-2xl text-white shadow-sm transition-all flex items-center justify-between group"
               >
                 <div>
                   <h3 className="font-bold text-base">Tambah Pemasukan</h3>
-                  <p className="text-xs text-slate-100 mt-1">Catat gaji, bonus, atau profit bisnis</p>
+                  <p className="text-xs text-gray-300 mt-0.5">Catat gaji, bonus, atau profit bisnis</p>
                 </div>
-                <span className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                <span className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center transition-transform">
                   <FontAwesomeIcon icon={faPlus} />
                 </span>
               </Link>
 
               <Link 
                 to="/shopping-list" 
-                className="p-5 bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 rounded-3xl text-white shadow-md hover:shadow-lg transition-all flex items-center justify-between group"
+                className="p-5 bg-[#1b4d3e] hover:bg-[#153b2f] rounded-2xl text-white shadow-sm transition-all flex items-center justify-between group"
               >
                 <div>
-                  <h3 className="font-bold text-base">Daftar Belanja</h3>
-                  <p className="text-xs text-slate-100 mt-1">Kelola kebutuhan belanja terintegrasi</p>
+                  <h3 className="font-bold text-base">Daftar belanja</h3>
+                  <p className="text-xs text-gray-300 mt-0.5">Kelola kebutuhan belanja terintegrasi</p>
                 </div>
-                <span className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:translate-x-1 transition-transform">
-                  <FontAwesomeIcon icon={faArrowRight} />
+                <span className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center transition-transform">
+                  <FontAwesomeIcon icon={faPlus} />
                 </span>
               </Link>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-              <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm">
                 <div className="flex items-center gap-2.5 mb-5">
-                  <span className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center">
-                    <FontAwesomeIcon icon={faChartPie} className="text-expense text-sm" />
+                  <span className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center">
+                    <FontAwesomeIcon icon={faChartPie} className="text-red-600 text-sm" />
                   </span>
-                  <h2 className="text-sm font-bold text-slate-700">
+                  <h2 className="text-sm font-bold text-gray-700">
                     Rincian Kategori Pengeluaran
                   </h2>
                 </div>
                 <DonutChart categoryBreakdown={data.category_breakdown} />
               </div>
 
-              <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm">
                 <div className="flex items-center gap-2.5 mb-5">
-                  <span className="w-8 h-8 rounded-lg bg-accent-50 flex items-center justify-center">
-                    <FontAwesomeIcon icon={faScaleBalanced} className="text-white text-xs" />
+                  <span className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+                    <FontAwesomeIcon icon={faScaleBalanced} className="text-emerald-700 text-xs" />
                   </span>
-                  <h2 className="text-sm font-bold text-slate-700">Sisa Uang</h2>
+                  <h2 className="text-sm font-bold text-gray-700">Sisa uang</h2>
                 </div>
                 <CircularProgress
                   balance={data.balance}
@@ -185,12 +213,12 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm">
               <div className="flex items-center gap-2.5 mb-5">
-                <span className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
-                  <FontAwesomeIcon icon={faChartLine} className="text-slate-500 text-sm" />
+                <span className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center">
+                  <FontAwesomeIcon icon={faChartLine} className="text-gray-500 text-sm" />
                 </span>
-                <h2 className="text-sm font-bold text-slate-700">
+                <h2 className="text-sm font-bold text-gray-700">
                   Tren Pemasukan & Pengeluaran Harian
                 </h2>
               </div>
@@ -203,15 +231,15 @@ export default function Dashboard() {
   );
 }
 
-function SummaryCard({ label, value, icon, colorClass, bgClass, iconBg }) {
+function SummaryCard({ label, value, icon, colorClass, valueColorClass, bgClass, iconBg }) {
   return (
-    <div className={`${bgClass} rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-4`}>
-      <div className={`w-12 h-12 rounded-2xl ${iconBg} flex items-center justify-center shrink-0 shadow-inner`}>
-        <FontAwesomeIcon icon={icon} className={`${colorClass} text-lg`} />
+    <div className={`${bgClass} rounded-2xl p-5 flex items-center gap-4 shadow-sm border border-transparent`}>
+      <div className={`w-11 h-11 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}>
+        <FontAwesomeIcon icon={icon} className={`${colorClass} text-base`} />
       </div>
       <div className="min-w-0">
-        <p className="text-xs font-semibold text-slate-400 mb-0.5">{label}</p>
-        <p className={`text-xl font-extrabold ${colorClass} truncate`}>{formatCurrency(value)}</p>
+        <p className="text-[11px] font-semibold text-gray-500 mb-0.5">{label}</p>
+        <p className={`text-lg font-bold ${valueColorClass || 'text-black'} truncate`}>{formatCurrency(value)}</p>
       </div>
     </div>
   );

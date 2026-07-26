@@ -13,7 +13,6 @@ return [
             'provider' => 'users',
         ],
 
-        // Digunakan oleh route API (auth:sanctum) lewat middleware Sanctum
         'sanctum' => [
             'driver' => 'sanctum',
             'provider' => 'users',

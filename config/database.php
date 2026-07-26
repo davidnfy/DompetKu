@@ -16,7 +16,6 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        // Database utama yang dipakai proyek ini
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),

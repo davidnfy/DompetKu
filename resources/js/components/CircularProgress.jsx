@@ -1,4 +1,5 @@
 import { formatCurrency } from '../utils/format';
+
 export default function CircularProgress({ balance, remainingPercentage, expensePercentage, totalIncome }) {
   const size = 180;
   const strokeWidth = 14;
@@ -14,7 +15,6 @@ export default function CircularProgress({ balance, remainingPercentage, expense
     <div className="flex flex-col items-center justify-center py-4">
       <div className="relative" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="-rotate-90">
-          {/* Track dasar abu-abu */}
           <circle
             cx={size / 2}
             cy={size / 2}
@@ -25,7 +25,6 @@ export default function CircularProgress({ balance, remainingPercentage, expense
           />
           {hasIncome && (
             <>
-              {/* Busur merah untuk porsi pengeluaran */}
               <circle
                 cx={size / 2}
                 cy={size / 2}
@@ -36,7 +35,6 @@ export default function CircularProgress({ balance, remainingPercentage, expense
                 strokeDasharray={`${expenseLength} ${circumference - expenseLength}`}
                 strokeLinecap="round"
               />
-              {/* Busur hijau untuk porsi sisa saldo, dimulai setelah porsi merah */}
               <circle
                 cx={size / 2}
                 cy={size / 2}
@@ -52,7 +50,6 @@ export default function CircularProgress({ balance, remainingPercentage, expense
           )}
         </svg>
 
-        {/* Teks di tengah lingkaran, posisi absolute supaya tidak geser-geser */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-xs text-gray-400 mb-1">Sisa Saldo</span>
           <span className={`text-lg font-bold ${balance >= 0 ? 'text-income' : 'text-expense'}`}>
@@ -61,7 +58,6 @@ export default function CircularProgress({ balance, remainingPercentage, expense
         </div>
       </div>
 
-      {/* Legend disusun vertikal supaya tidak terpotong di container sempit */}
       <div className="flex flex-col items-start gap-2 mt-6 text-xs w-full max-w-[220px]">
         <div className="flex items-center gap-2 w-full">
           <span className="w-2.5 h-2.5 rounded-full bg-income inline-block shrink-0" />

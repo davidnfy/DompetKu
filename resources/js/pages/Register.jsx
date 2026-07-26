@@ -104,23 +104,17 @@ export default function Register() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top_left,_#f6fff7_0%,_#eef8f0_35%,_#f7fbf8_100%)] px-4 py-8 sm:py-12">
-      <div className="pointer-events-none absolute left-1/4 top-1/4 h-80 w-80 rounded-full bg-[#78b98d]/15 blur-[110px]" />
-      <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-[#2d6b49]/10 blur-[120px]" />
-
-      <div className="relative z-10 w-full max-w-[480px] animate-fade-in rounded-[32px] border border-[#e4efe7] bg-white/95 p-8 shadow-[0_24px_70px_rgba(31,63,45,0.12)] backdrop-blur-xl sm:p-10">
+    <div className="relative flex min-h-screen items-center justify-center bg-[#ecf7f2] px-4 py-8 sm:py-12">
+      <div className="relative z-10 w-full max-w-[440px] rounded-[32px] bg-white p-8 shadow-[0_15px_40px_rgba(0,0,0,0.06)] sm:p-10">
         <div className="mb-8 flex flex-col items-center text-center">
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#2f6b49] to-[#74b67c] shadow-[0_16px_36px_rgba(47,107,73,0.24)]">
-            <FontAwesomeIcon icon={faWallet} className="text-white text-2xl" />
+          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1b4d3e] shadow-sm">
+            <FontAwesomeIcon icon={faWallet} className="h-6 w-6 text-white" />
           </div>
-          <h1 className="text-3xl font-semibold text-[#18372b]">Buat Akun Baru</h1>
-          <p className="mt-2 text-sm leading-6 text-[#6d7a72]">
-            {step === 1 ? 'Mulai mengelola keuangan Anda hari ini dengan akun yang aman.' : `Verifikasi OTP yang dikirim ke ${email}`}
-          </p>
+          <h1 className="text-2xl font-bold text-black">Buat Akun Baru</h1>
         </div>
 
         {error && (
-          <div className="mb-6 rounded-2xl border border-[#f2d5d9] bg-[#fff5f7] px-4 py-3 text-sm font-medium text-[#b13b4f] animate-fade-in">
+          <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
             {error}
           </div>
         )}
@@ -128,51 +122,49 @@ export default function Register() {
         {step === 1 ? (
           <form onSubmit={handleSendOtp} className="space-y-5">
             <div>
-              <label className="mb-2 block text-sm font-semibold text-[#274d37]">Nama Lengkap</label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-[#8aa08f]">
-                  <FontAwesomeIcon icon={faUser} />
-                </span>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 px-4 py-2.5 pl-11 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-income/40 transition-shadow"
-                  placeholder="Tulis nama lengkap"
-                />
-              </div>
+              <label className="mb-2 block text-xs font-semibold text-black">
+                Nama lengkap <FontAwesomeIcon icon={faUser} className="ml-1 text-gray-700" />
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#1b4d3e] transition-shadow"
+                placeholder="Tulis nama lengkap"
+              />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-semibold text-[#274d37]">Username</label>
+              <label className="mb-2 block text-xs font-semibold text-black">
+                Username <FontAwesomeIcon icon={faUser} className="ml-1 text-gray-700" />
+              </label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s+/g, ''))}
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-income/40 transition-shadow"
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#1b4d3e] transition-shadow"
                 placeholder="Buat username unik"
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-semibold text-[#274d37]">Alamat Email</label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-[#8aa08f]">
-                  <FontAwesomeIcon icon={faEnvelope} />
-                </span>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 px-4 py-2.5 pl-11 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-income/40 transition-shadow"
-                  placeholder="example@email.com"
-                  autoComplete="email"
-                />
-              </div>
+              <label className="mb-2 block text-xs font-semibold text-black">
+                Email <FontAwesomeIcon icon={faEnvelope} className="ml-1 text-gray-700" />
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#1b4d3e] transition-shadow"
+                placeholder="example@gmail.com"
+                autoComplete="email"
+              />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-semibold text-[#274d37]">Password</label>
+              <label className="mb-2 block text-xs font-semibold text-black">
+                Password <FontAwesomeIcon icon={faLock} className="ml-1 text-gray-700" />
+              </label>
               <PasswordInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -181,48 +173,51 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-semibold text-[#274d37]">Konfirmasi Password</label>
+              <label className="mb-2 block text-xs font-semibold text-black">
+                Konfirmasi Password <FontAwesomeIcon icon={faLock} className="ml-1 text-gray-700" />
+              </label>
               <PasswordInput
                 value={passwordConfirmation}
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
-                placeholder="Konfrimasi password"
+                placeholder="Konfirmasi Password"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2f6b49] to-[#74b67c] px-4 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(47,107,73,0.2)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(47,107,73,0.24)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1b4d3e] hover:bg-[#153b2f] px-4 py-3 text-sm font-bold text-white transition-all duration-300 disabled:opacity-70"
             >
               {loading ? (
                 <FontAwesomeIcon icon={faCircleNotch} spin />
               ) : (
                 <>
-                  Daftar & Kirim OTP
-                  <FontAwesomeIcon icon={faChevronRight} className="text-xs group-hover:translate-x-1 transition-transform" />
+                  Daftar & Kirim OTP &gt;
                 </>
               )}
             </button>
           </form>
         ) : (
-          <form onSubmit={handleVerifyRegister} className="space-y-6">
+          <form onSubmit={handleVerifyRegister} className="space-y-5">
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="flex items-center gap-1 text-xs font-semibold text-[#6d7a72] transition-colors duration-300 hover:text-[#274d37]"
+              className="flex items-center gap-1 text-xs font-bold text-gray-600 transition-colors hover:text-black"
             >
               <FontAwesomeIcon icon={faChevronLeft} /> Kembali
             </button>
 
             <div>
-              <label className="mb-2 block text-center text-sm font-semibold text-[#274d37]">Masukkan 6 Digit OTP</label>
-              <OtpInput value={code} onChange={setCode} isError={error !== ''} />
+              <label className="mb-2 block text-center text-xs font-semibold text-black">Masukkan 6 Digit OTP</label>
+              <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+                <OtpInput value={code} onChange={setCode} isError={error !== ''} />
+              </div>
             </div>
 
             <button
               type="submit"
               disabled={loading || code.length !== 6}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2f6b49] to-[#74b67c] px-4 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(47,107,73,0.2)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(47,107,73,0.24)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1b4d3e] hover:bg-[#153b2f] px-4 py-3 text-sm font-bold text-white transition-all duration-300 disabled:opacity-70"
             >
               {loading && <FontAwesomeIcon icon={faCircleNotch} spin />}
               Verifikasi & Daftarkan Akun
@@ -233,7 +228,7 @@ export default function Register() {
                 type="button"
                 disabled={resendCooldown > 0 || loading}
                 onClick={handleSendOtp}
-                className="text-sm font-medium text-[#2f6b49] transition-colors duration-300 hover:text-[#274d37] hover:underline disabled:text-[#95a29b]"
+                className="text-sm font-bold text-[#1b4d3e] transition-colors duration-300 hover:underline disabled:text-gray-400"
               >
                 {resendCooldown > 0 ? `Kirim ulang OTP dalam ${resendCooldown}s` : 'Kirim Ulang OTP'}
               </button>
@@ -241,10 +236,10 @@ export default function Register() {
           </form>
         )}
 
-        <div className="mt-8 border-t border-[#ebf2ec] pt-6">
-          <p className="text-center text-sm font-medium text-[#6d7a72]">
+        <div className="mt-6 border-t border-gray-150 pt-5">
+          <p className="text-center text-xs text-gray-500">
             Sudah punya akun?{' '}
-            <Link to="/login" className="font-semibold text-[#2f6b49] underline-offset-4 transition-all duration-300 hover:text-[#274d37] hover:underline">
+            <Link to="/login" className="font-bold text-[#1b4d3e] transition-all hover:underline">
               Masuk
             </Link>
           </p>

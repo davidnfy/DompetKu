@@ -4,7 +4,6 @@ export default function OtpInput({ length = 6, value, onChange, isError }) {
   const inputsRef = useRef([]);
 
   useEffect(() => {
-    // Clear refs
     inputsRef.current = inputsRef.current.slice(0, length);
   }, [length]);
 
@@ -13,11 +12,10 @@ export default function OtpInput({ length = 6, value, onChange, isError }) {
     if (isNaN(val)) return;
 
     const newValueArray = value.split('');
-    newValueArray[index] = val.substring(val.length - 1); // Keep last digit
+    newValueArray[index] = val.substring(val.length - 1);
     const newString = newValueArray.join('');
     onChange(newString);
 
-    // Auto-focus next input
     if (val && index < length - 1) {
       inputsRef.current[index + 1].focus();
     }
@@ -27,12 +25,10 @@ export default function OtpInput({ length = 6, value, onChange, isError }) {
     if (e.key === 'Backspace') {
       const newValueArray = value.split('');
       if (!newValueArray[index] && index > 0) {
-        // Backspace empty field → delete prev field & focus it
         newValueArray[index - 1] = '';
         onChange(newValueArray.join(''));
         inputsRef.current[index - 1].focus();
       } else {
-        // Normal delete
         newValueArray[index] = '';
         onChange(newValueArray.join(''));
       }
@@ -42,16 +38,14 @@ export default function OtpInput({ length = 6, value, onChange, isError }) {
   const handlePaste = (e) => {
     e.preventDefault();
     const pasteData = e.clipboardData.getData('text').slice(0, length);
-    if (!/^\d+$/.test(pasteData)) return; // Digits only
+    if (!/^\d+$/.test(pasteData)) return;
 
     onChange(pasteData.padEnd(length, ''));
     
-    // Focus last filled or next empty
     const focusIndex = Math.min(pasteData.length, length - 1);
     inputsRef.current[focusIndex].focus();
   };
 
-  // Convert current value string into an array representing the code digits
   const codeDigits = value.padEnd(length, ' ').split('').slice(0, length);
 
   return (

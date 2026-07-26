@@ -16,7 +16,6 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password, code) => {
     const { data } = await api.post('/login', { email, password, code });
-    // Only persist token/user when server returns token (after OTP verification)
     if (data.token) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
@@ -67,4 +66,3 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   return useContext(AuthContext);
 }
-

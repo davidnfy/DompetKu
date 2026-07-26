@@ -20,7 +20,6 @@ return [
 
     'lottery' => [2, 100],
 
-    // Nama cookie sesi -- dipakai jika suatu saat login berbasis cookie (Sanctum SPA) diaktifkan
     'cookie' => env(
         'SESSION_COOKIE',
         'finance_tracker_session'

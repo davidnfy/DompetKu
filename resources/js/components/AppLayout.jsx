@@ -14,11 +14,9 @@ export default function AppLayout({ children }) {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-slate-50 relative">
-      {/* Mobile Header */}
+    <div className="flex flex-col md:flex-row min-h-screen bg-[#ecf7f2] relative">
       <MobileHeader onToggleSidebar={toggleSidebar} />
 
-      {/* Sidebar Wrapper */}
       <div
         className={`fixed inset-y-0 left-0 z-30 transform md:transform-none md:relative md:flex transition-transform duration-300 ease-in-out ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
@@ -27,7 +25,6 @@ export default function AppLayout({ children }) {
         <Sidebar onClose={closeSidebar} />
       </div>
 
-      {/* Mobile Sidebar Overlay Backdrop */}
       {sidebarOpen && (
         <div
           onClick={closeSidebar}
@@ -35,7 +32,6 @@ export default function AppLayout({ children }) {
         />
       )}
 
-      {/* Main Content Pane */}
       <div className="flex-1 min-w-0 flex flex-col">
         <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto w-full max-w-7xl mx-auto">
           <div className="animate-fade-in">

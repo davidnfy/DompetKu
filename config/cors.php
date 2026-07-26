@@ -5,7 +5,6 @@ return [
 
     'allowed_methods' => ['*'],
 
-    // Ganti sesuai domain frontend React (Vite) di production
     'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:5173')],
 
     'allowed_origins_patterns' => [],
@@ -16,6 +15,5 @@ return [
 
     'max_age' => 0,
 
-    // Wajib true agar cookie Sanctum bisa terkirim dari React
     'supports_credentials' => true,
 ];

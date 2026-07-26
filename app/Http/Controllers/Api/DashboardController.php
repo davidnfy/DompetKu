@@ -9,27 +9,35 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    /**
-     * GET /api/dashboard?days=7|14|21|30
-     *
-     * Mengembalikan ringkasan keuangan untuk periode N hari terakhir
-     * (termasuk hari ini), dipakai untuk mengisi seluruh widget dashboard.
-     */
     public function index(Request $request)
     {
-        $allowedDays = [7, 14, 21, 30];
-        $days = (int) $request->query('days', 7);
-
-        if (! in_array($days, $allowedDays, true)) {
-            $days = 7;
-        }
-
         $userId = $request->user()->id;
 
-        // Periode: dari (hari ini - (days-1)) jam 00:00:00 s/d hari ini jam 23:59:59
-        // Sehingga "7 Hari" benar-benar mencakup 7 hari kalender termasuk hari ini.
-        $endDate = Carbon::now()->endOfDay();
-        $startDate = Carbon::now()->subDays($days - 1)->startOfDay();
+        $startDateStr = $request->query('start_date');
+        $endDateStr = $request->query('end_date');
+
+        if ($startDateStr && $endDateStr) {
+            try {
+                $startDate = Carbon::parse($startDateStr)->startOfDay();
+                $endDate = Carbon::parse($endDateStr)->endOfDay();
+                $days = (int) $startDate->diffInDays($endDate) + 1;
+                if ($days <= 0) {
+                    $days = 1;
+                }
+            } catch (\Exception $e) {
+                $days = 7;
+                $endDate = Carbon::now()->endOfDay();
+                $startDate = Carbon::now()->subDays($days - 1)->startOfDay();
+            }
+        } else {
+            $days = (int) $request->query('days', 7);
+            $allowedDays = [7, 14, 21, 30];
+            if (! in_array($days, $allowedDays, true)) {
+                $days = 7;
+            }
+            $endDate = Carbon::now()->endOfDay();
+            $startDate = Carbon::now()->subDays($days - 1)->startOfDay();
+        }
 
         $transactions = Transaction::with('category')
             ->where('user_id', $userId)
@@ -43,7 +51,6 @@ class DashboardController extends Controller
         $totalExpense = (float) $expenseTransactions->sum('amount');
         $balance = $totalIncome - $totalExpense;
 
-        // Hindari division by zero: jika tidak ada pemasukan, persentase = 0
         $remainingPercentage = $totalIncome > 0 ? round(($balance / $totalIncome) * 100, 2) : 0;
         $expensePercentage = $totalIncome > 0 ? round(($totalExpense / $totalIncome) * 100, 2) : 0;
 
@@ -63,9 +70,6 @@ class DashboardController extends Controller
         ]);
     }
 
-    /**
-     * Rincian per kategori pengeluaran untuk donut chart.
-     */
     private function buildCategoryBreakdown($expenseTransactions, float $totalExpense): array
     {
         $grouped = $expenseTransactions->groupBy('category_id');
@@ -83,17 +87,11 @@ class DashboardController extends Controller
             ];
         })->values();
 
-        // Urutkan dari pengeluaran terbesar
         return $breakdown->sortByDesc('total_amount')->values()->all();
     }
 
-    /**
-     * Tren harian income vs expense untuk line chart.
-     * Memastikan setiap hari dalam periode muncul walau nilainya 0 (tidak ada transaksi).
-     */
     private function buildDailyTrend($transactions, Carbon $startDate, Carbon $endDate): array
     {
-        // Inisialisasi semua tanggal dalam periode dengan nilai 0
         $trend = [];
         $cursor = $startDate->copy();
         while ($cursor->lte($endDate)) {
@@ -106,12 +104,11 @@ class DashboardController extends Controller
             $cursor->addDay();
         }
 
-        // Akumulasi transaksi ke tanggal masing-masing (berdasarkan tanggal, jam diabaikan)
         foreach ($transactions as $transaction) {
             $dateKey = Carbon::parse($transaction->transaction_date)->toDateString();
 
             if (! isset($trend[$dateKey])) {
-                continue; // safety, seharusnya tidak terjadi karena sudah difilter whereBetween
+                continue;
             }
 
             if ($transaction->category->type === 'income') {

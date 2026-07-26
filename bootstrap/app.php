@@ -12,13 +12,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Catatan: Kita TIDAK memakai $middleware->statefulApi() di sini.
-        // Autentikasi API pada project ini memakai Bearer Token (Sanctum
-        // Personal Access Token), bukan cookie-based SPA session.
-        // Mengaktifkan statefulApi() akan memaksa request /api/* dari
-        // domain yang sama untuk lewat middleware 'web' (session + CSRF),
-        // yang menyebabkan error "CSRF token mismatch" saat login/register.
-
         $middleware->api(prepend: [
             \Illuminate\Http\Middleware\HandleCors::class,
         ]);

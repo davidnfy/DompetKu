@@ -1,7 +1,6 @@
 import React from 'react';
 
 export default function LazyImage({ src, alt = '', className = '', webpSrc, ...props }) {
-  // Renders a picture element with optional webp source and native lazy loading
   return (
     <picture className={className}>
       {webpSrc && <source srcSet={webpSrc} type="image/webp" />}

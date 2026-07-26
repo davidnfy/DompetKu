@@ -77,57 +77,56 @@ export default function Settings() {
   return (
     <AppLayout>
       <div className="max-w-2xl mx-auto space-y-6">
-        <h1 className="text-2xl font-bold text-primary-800">Pengaturan Akun</h1>
+        <h1 className="text-2xl font-bold text-[#1b4d3e]">Pengaturan</h1>
 
-        {/* Update Profil */}
-        <form onSubmit={handleUpdateProfile} className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow duration-200 space-y-4">
+        <form onSubmit={handleUpdateProfile} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200/60 space-y-4">
           <div className="flex items-center gap-2.5 mb-2">
-            <span className="w-8 h-8 rounded-lg bg-accent-500/10 flex items-center justify-center">
-              <FontAwesomeIcon icon={faUser} className="text-accent-600 text-sm" />
+            <span className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+              <FontAwesomeIcon icon={faUser} className="text-emerald-700 text-sm" />
             </span>
-            <h2 className="text-sm font-bold text-slate-700">Informasi Profil</h2>
+            <h2 className="text-sm font-bold text-gray-700">Informasi Profil</h2>
           </div>
 
           {profileError && (
-            <div className="text-sm text-expense bg-rose-50 border border-rose-100 px-4 py-2 rounded-xl">{profileError}</div>
+            <div className="text-sm text-red-700 bg-red-50 border border-red-100 px-4 py-2 rounded-xl">{profileError}</div>
           )}
           {profileSuccess && (
-            <div className="text-sm text-accent-600 bg-accent-50 border border-accent-100 px-4 py-2 rounded-xl flex items-center gap-2">
+            <div className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-100 px-4 py-2 rounded-xl flex items-center gap-2">
               <FontAwesomeIcon icon={faCheck} /> {profileSuccess}
             </div>
           )}
 
           <div>
-            <label className="text-sm font-medium text-slate-600 mb-1 block">Nama Lengkap</label>
+            <label className="text-sm font-medium text-gray-600 mb-1 block">Nama Lengkap</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500 transition-all font-medium"
+              className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1b4d3e]/20 transition-all font-medium"
               placeholder="Masukkan nama lengkap"
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-slate-600 mb-1 block">Username</label>
+            <label className="text-sm font-medium text-gray-600 mb-1 block">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s+/g, ''))}
-              className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500 transition-all font-medium"
+              className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1b4d3e]/20 transition-all font-medium"
               placeholder="Masukkan username"
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-slate-600 mb-1 block">Alamat Email</label>
+            <label className="text-sm font-medium text-gray-600 mb-1 block">Alamat Email</label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
+              <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
                 <FontAwesomeIcon icon={faEnvelope} />
               </span>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500 transition-all font-medium"
+                className="w-full rounded-xl border border-gray-200 pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1b4d3e]/20 transition-all font-medium"
                 placeholder="Masukkan email"
               />
             </div>
@@ -136,33 +135,32 @@ export default function Settings() {
           <button
             type="submit"
             disabled={profileLoading}
-            className="bg-accent-500 hover:bg-accent-600 text-white text-sm font-semibold px-6 py-2.5 rounded-xl shadow-lg shadow-accent-500/15 transition-colors disabled:opacity-60 flex items-center gap-2"
+            className="bg-[#1b4d3e] hover:bg-[#153b2f] text-white text-sm font-bold px-6 py-2.5 rounded-xl transition-colors disabled:opacity-60 flex items-center gap-2"
           >
             {profileLoading && <FontAwesomeIcon icon={faCircleNotch} spin />}
             Simpan Profil
           </button>
         </form>
 
-        {/* Ganti Password */}
-        <form onSubmit={handleUpdatePassword} className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow duration-200 space-y-4">
+        <form onSubmit={handleUpdatePassword} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200/60 space-y-4">
           <div className="flex items-center gap-2.5 mb-2">
-            <span className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center">
-              <FontAwesomeIcon icon={faLock} className="text-expense text-sm" />
+            <span className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center">
+              <FontAwesomeIcon icon={faLock} className="text-red-700 text-sm" />
             </span>
-            <h2 className="text-sm font-bold text-slate-700">Ganti Password</h2>
+            <h2 className="text-sm font-bold text-gray-700">Ganti Password</h2>
           </div>
 
           {passwordError && (
-            <div className="text-sm text-expense bg-rose-50 border border-rose-100 px-4 py-2 rounded-xl">{passwordError}</div>
+            <div className="text-sm text-red-700 bg-red-50 border border-red-100 px-4 py-2 rounded-xl">{passwordError}</div>
           )}
           {passwordSuccess && (
-            <div className="text-sm text-accent-600 bg-accent-50 border border-accent-100 px-4 py-2 rounded-xl flex items-center gap-2">
+            <div className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-100 px-4 py-2 rounded-xl flex items-center gap-2">
               <FontAwesomeIcon icon={faCheck} /> {passwordSuccess}
             </div>
           )}
 
           <div>
-            <label className="text-sm font-medium text-slate-600 mb-1 block">Password Saat Ini</label>
+            <label className="text-sm font-medium text-gray-600 mb-1 block">Password Saat Ini</label>
             <PasswordInput
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
@@ -170,7 +168,7 @@ export default function Settings() {
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-slate-600 mb-1 block">Password Baru</label>
+            <label className="text-sm font-medium text-gray-600 mb-1 block">Password Baru</label>
             <PasswordInput
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
@@ -178,7 +176,7 @@ export default function Settings() {
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-slate-600 mb-1 block">Konfirmasi Password Baru</label>
+            <label className="text-sm font-medium text-gray-600 mb-1 block">Konfirmasi Password Baru</label>
             <PasswordInput
               value={newPasswordConfirmation}
               onChange={(e) => setNewPasswordConfirmation(e.target.value)}
@@ -189,7 +187,7 @@ export default function Settings() {
           <button
             type="submit"
             disabled={passwordLoading}
-            className="bg-primary-800 hover:bg-primary-700 text-white text-sm font-semibold px-6 py-2.5 rounded-xl shadow-lg shadow-primary-800/15 transition-colors disabled:opacity-60 flex items-center gap-2"
+            className="bg-[#1b4d3e] hover:bg-[#153b2f] text-white text-sm font-bold px-6 py-2.5 rounded-xl transition-colors disabled:opacity-60 flex items-center gap-2"
           >
             {passwordLoading && <FontAwesomeIcon icon={faCircleNotch} spin />}
             Ganti Password

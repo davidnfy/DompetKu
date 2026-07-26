@@ -4,12 +4,6 @@ import { faCircleNotch, faPlus, faXmark } from '@fortawesome/free-solid-svg-icon
 import CategorySelect from './CategorySelect';
 import CategoryModal from './CategoryModal';
 
-/**
- * Form input transaksi, dipakai ulang di halaman Income & Expense.
- * type: 'income' | 'expense'
- * editingTransaction: kalau ada isinya, form otomatis masuk mode edit
- * onCancelEdit: dipanggil saat user membatalkan edit
- */
 export default function TransactionForm({
   type,
   categories,
@@ -29,9 +23,8 @@ export default function TransactionForm({
   const [showCategoryModal, setShowCategoryModal] = useState(false);
 
   const isEditing = Boolean(editingTransaction);
-  const accentClass = type === 'income' ? 'bg-income hover:bg-income/90' : 'bg-expense hover:bg-expense/90';
+  const accentClass = type === 'income' ? 'bg-[#1b4d3e] hover:bg-[#153b2f]' : 'bg-[#dc2626] hover:bg-[#b91c1c]';
 
-  // Saat editingTransaction berubah (user klik "Edit" di tabel), isi form otomatis
   useEffect(() => {
     if (editingTransaction) {
       setAmount(String(editingTransaction.amount));
@@ -124,7 +117,7 @@ export default function TransactionForm({
               <button
                 type="button"
                 onClick={() => setShowCategoryModal(true)}
-                className="text-xs text-income hover:text-income/80 flex items-center gap-1 font-medium"
+                className={`text-xs ${type === 'income' ? 'text-[#1b4d3e] hover:text-[#153b2f]' : 'text-[#dc2626] hover:text-[#b91c1c]'} flex items-center gap-1 font-bold`}
               >
                 <FontAwesomeIcon icon={faPlus} className="text-[10px]" /> Kategori baru
               </button>

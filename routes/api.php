@@ -8,13 +8,6 @@ use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ShoppingListController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes - Personal Finance Tracker
-|--------------------------------------------------------------------------
-*/
-
-// Auth (publik) - Login / register menggunakan email & OTP
 Route::post('/send-otp', [AuthController::class, 'sendOtp']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -22,7 +15,6 @@ Route::post('/check-username', [AuthController::class, 'checkUsername']);
 Route::post('/verify-reset-code', [AuthController::class, 'verifyResetCode']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
-// Semua route di bawah ini wajib login (Sanctum token)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
@@ -41,7 +33,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
-    // Shopping List Routes
     Route::get('/shopping-list', [ShoppingListController::class, 'index']);
     Route::post('/shopping-list', [ShoppingListController::class, 'store']);
     Route::put('/shopping-list/{id}', [ShoppingListController::class, 'update']);
@@ -49,7 +40,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/shopping-list/{id}/toggle', [ShoppingListController::class, 'toggle']);
     Route::delete('/shopping-list/clear-checked', [ShoppingListController::class, 'clearChecked']);
 
-    // Khusus admin
     Route::middleware('admin')->prefix('admin')->group(function () {
         Route::get('/users', [AdminController::class, 'listUsers']);
         Route::put('/users/{id}/reset-password', [AdminController::class, 'resetUserPassword']);

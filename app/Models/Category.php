@@ -11,7 +11,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    public $timestamps = false; // hanya created_at, tidak ada updated_at
+    public $timestamps = false;
 
     protected $fillable = [
         'name',
@@ -43,10 +43,6 @@ class Category extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    /**
-     * Scope: kategori yang bisa dipakai oleh user tertentu
-     * (kategori miliknya sendiri + kategori default sistem).
-     */
     public function scopeAvailableFor($query, int $userId)
     {
         return $query->where(function ($q) use ($userId) {

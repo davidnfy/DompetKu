@@ -127,81 +127,68 @@ export default function Login() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top_left,_#f6fff7_0%,_#eef8f0_35%,_#f7fbf8_100%)] px-4 py-8 sm:py-12">
-      <div className="pointer-events-none absolute left-1/4 top-1/4 h-80 w-80 rounded-full bg-[#78b98d]/15 blur-[110px]" />
-      <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-[#2d6b49]/10 blur-[120px]" />
-
-      <div className="relative z-10 w-full max-w-[480px] animate-fade-in rounded-[32px] border border-[#e4efe7] bg-white/95 p-8 shadow-[0_24px_70px_rgba(31,63,45,0.12)] backdrop-blur-xl sm:p-10">
+    <div className="relative flex min-h-screen items-center justify-center bg-[#ecf7f2] px-4 py-8 sm:py-12">
+      <div className="relative z-10 w-full max-w-[440px] rounded-[32px] bg-white p-8 shadow-[0_15px_40px_rgba(0,0,0,0.06)] sm:p-10">
         <div className="mb-8 flex flex-col items-center text-center">
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#2f6b49] to-[#74b67c] shadow-[0_16px_36px_rgba(47,107,73,0.24)]">
-            <svg viewBox="0 0 64 64" className="h-8 w-8 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M22 16h20a6 6 0 0 1 6 6v20a6 6 0 0 1-6 6H22a6 6 0 0 1-6-6V22a6 6 0 0 1 6-6Z" />
-              <path d="M24 24h16" />
-              <path d="M28 30h8" />
-              <path d="M26 36h12" />
-              <path d="M22 10v-2" />
-              <path d="M42 10v-2" />
-            </svg>
+          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1b4d3e] shadow-sm">
+            <FontAwesomeIcon icon={faWallet} className="h-6 w-6 text-white" />
           </div>
-          <h1 className="text-3xl font-semibold text-[#18372b]">Masuk ke DompetKu</h1>
-
+          <h1 className="text-2xl font-bold text-black">DompetKu</h1>
         </div>
 
         {error && (
-          <div className="mb-6 rounded-2xl border border-[#f2d5d9] bg-[#fff5f7] px-4 py-3 text-sm font-medium text-[#b13b4f] animate-fade-in">
+          <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
             {error}
           </div>
         )}
 
         {step === 1 ? (
-          <form onSubmit={handleSendOtp} className="space-y-6">
+          <form onSubmit={handleSendOtp} className="space-y-5">
             <div>
-              <label className="mb-2 block text-sm font-semibold text-[#274d37]">
-                Email
-                <FontAwesomeIcon icon={faEnvelope} className="ml-2 text-[#8aa08f]" />
+              <label className="mb-2 block text-xs font-semibold text-black">
+                Email <FontAwesomeIcon icon={faEnvelope} className="ml-1 text-gray-700" />
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="example@email.com"
+                placeholder="example@gmail.com"
                 autoComplete="email"
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-income/40 transition-shadow"
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#1b4d3e] transition-shadow"
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-semibold text-[#274d37]">
-                Password 
-                <FontAwesomeIcon icon={faLock} className="ml-2 text-[#8aa08f]" />
+              <label className="mb-2 block text-xs font-semibold text-black">
+                Password <FontAwesomeIcon icon={faLock} className="ml-1 text-gray-700" />
               </label>
               <PasswordInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={email.trim().toLowerCase() === 'mail.dompetku@gmail.com' ? 'Masukkan password admin' : 'Masukan Password'}
+                placeholder="Masukkan Password"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2f6b49] to-[#74b67c] px-4 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(47,107,73,0.2)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(47,107,73,0.24)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1b4d3e] hover:bg-[#153b2f] px-4 py-3 text-sm font-bold text-white transition-all duration-300 disabled:opacity-70"
             >
               {loading ? (
                 <FontAwesomeIcon icon={faCircleNotch} spin />
               ) : (
                 <>
-                  {isAdminLogin ? 'Masuk Sekarang' : 'Masuk Sekarang'}
-                  <FontAwesomeIcon icon={faPaperPlane} className="text-xs transition-transform duration-300 group-hover:translate-x-1" />
+                  Masuk Sekarang
+                  <FontAwesomeIcon icon={faPaperPlane} className="text-xs ml-1" />
                 </>
               )}
             </button>
           </form>
         ) : (
-          <form onSubmit={handleVerifyLogin} className="space-y-6">
+          <form onSubmit={handleVerifyLogin} className="space-y-5">
             <div>
-              <label className="mb-2 block text-center text-sm font-semibold text-[#274d37]">Masukkan 6 Digit OTP</label>
-              <div className="rounded-[24px] border border-[#e7f0e8] bg-[#f7fcf8] p-4">
+              <label className="mb-2 block text-center text-xs font-semibold text-black">Masukkan 6 Digit OTP</label>
+              <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
                 <OtpInput value={code} onChange={setCode} isError={error !== ''} />
               </div>
             </div>
@@ -209,7 +196,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading || code.length !== 6}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2f6b49] to-[#74b67c] px-4 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(47,107,73,0.2)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(47,107,73,0.24)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1b4d3e] hover:bg-[#153b2f] px-4 py-3 text-sm font-bold text-white transition-all duration-300 disabled:opacity-70"
             >
               {loading && <FontAwesomeIcon icon={faCircleNotch} spin />}
               Verifikasi & Masuk
@@ -220,7 +207,7 @@ export default function Login() {
                 type="button"
                 disabled={resendCooldown > 0 || loading}
                 onClick={handleResendOtp}
-                className="text-sm font-medium text-[#2f6b49] transition-colors duration-300 hover:text-[#274d37] hover:underline disabled:text-[#95a29b]"
+                className="text-sm font-bold text-[#1b4d3e] transition-colors duration-300 hover:underline disabled:text-gray-400"
               >
                 {resendCooldown > 0 ? `Kirim ulang OTP dalam ${resendCooldown}s` : 'Kirim Ulang OTP'}
               </button>
@@ -228,15 +215,15 @@ export default function Login() {
           </form>
         )}
 
-        <div className="mt-8 border-t border-[#ebf2ec] pt-6">
-          <div className="mb-3 text-center">
-            <Link to="/forgot-password" className="text-sm font-semibold text-[#2f6b49] underline-offset-4 transition-all duration-300 hover:text-[#274d37] hover:underline">
-              Lupa password?
+        <div className="mt-6 border-t border-gray-150 pt-5">
+          <div className="mb-4 text-center">
+            <Link to="/forgot-password" className="text-xs font-semibold text-[#1b4d3e] transition-all hover:underline">
+              Lupa Password?
             </Link>
           </div>
-          <p className="text-center text-sm font-medium text-[#6d7a72]">
+          <p className="text-center text-xs text-gray-500">
             Belum punya akun?{' '}
-            <Link to="/register" className="font-semibold text-[#2f6b49] underline-offset-4 transition-all duration-300 hover:text-[#274d37] hover:underline">
+            <Link to="/register" className="font-bold text-[#1b4d3e] transition-all hover:underline">
               Daftar Sekarang
             </Link>
           </p>

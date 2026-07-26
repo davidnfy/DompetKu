@@ -10,7 +10,7 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    public $timestamps = false; // hanya created_at
+    public $timestamps = false;
 
     protected $fillable = [
         'user_id',
