@@ -8,7 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Tabel users - login memakai username (bukan email), plus kolom role
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -16,7 +15,6 @@ return new class extends Migration
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            // Role: 'user' (default) atau 'admin'
             $table->enum('role', ['user', 'admin'])->default('user');
             $table->rememberToken();
             $table->timestamps();

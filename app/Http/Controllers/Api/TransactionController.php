@@ -9,10 +9,6 @@ use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
-    /**
-     * GET /api/transactions
-     * Bisa difilter dengan query param: category_id, type (income/expense).
-     */
     public function index(Request $request)
     {
         $query = Transaction::with('category')

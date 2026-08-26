@@ -213,14 +213,6 @@ export default function ForgotPassword() {
 
         {step === 3 && !success && (
           <form onSubmit={handleResetPassword} className="space-y-5">
-            <button
-              type="button"
-              onClick={() => setStep(2)}
-              className="text-xs font-bold text-gray-600 hover:text-black flex items-center gap-1 transition-colors"
-            >
-              <FontAwesomeIcon icon={faChevronLeft} /> Kembali ke Verifikasi
-            </button>
-
             <div>
               <label className="text-xs font-semibold text-black mb-2 block">
                 Password Baru <FontAwesomeIcon icon={faLock} className="ml-1 text-gray-700" />
